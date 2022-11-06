@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ChannelsSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:background">@drawable/sb_background_shape</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:theme">@style/AppWidgetTheme</item>
+        <item name="android:paddingStart">-8dp</item>
+        <item name="android:paddingEnd">-8dp</item>
+    </style>
+
+    <style name="ChannelsTabLayout" parent="Widget.Design.TabLayout">
+
+    </style>
+
+    <style name="AppWidgetTheme" parent="">
+        <item name="android:textColorHint">@color/sv_on_background</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:lineSpacingExtra">5sp</item>
+    </style>
+
+    <style name="TabTitle" parent="">
+        <item name="android:textColor">@color/sv_on_background</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:translationY">-0.62sp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ErrorTextStyle" parent="">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:translationY">-0.62sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ChannelName" parent="">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:lineSpacingExtra">-1sp</item>
+    </style>
+
+    <style name="ChannelDescription" parent="">
+        <item name="android:textColor">@color/channel_desc_text_color</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:translationY">-1.21sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+    </style>
+
+    <style name="SearchViewHintText" parent="">
+        <item name="android:textColor">@color/sv_on_background</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:translationY">-2.62sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:lineSpacingExtra">5sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+</resources>

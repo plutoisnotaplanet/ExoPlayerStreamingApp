@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background">#232427</color>
+    <color name="on_background">#80FFFFFF</color>
+    <color name="primary">#343438</color>
+    <color name="primary_variant">#404247</color>
+    <color name="surface">#0077FF</color>
+    <color name="sv_background">#404247</color>
+    <color name="sv_on_background">#808185</color>
+    <color name="channel_desc_text_color">#E9EAEF</color>
+</resources>
