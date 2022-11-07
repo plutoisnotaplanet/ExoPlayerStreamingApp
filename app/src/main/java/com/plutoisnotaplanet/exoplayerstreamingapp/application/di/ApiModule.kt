@@ -2,6 +2,10 @@ package com.plutoisnotaplanet.exoplayerstreamingapp.application.di
 
 import android.content.Context
 import coil.ImageLoader
+import coil.disk.DiskCache
+import coil.memory.MemoryCache
+import coil.request.CachePolicy
+import com.plutoisnotaplanet.exoplayerstreamingapp.BuildConfig
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.Constants
 import com.plutoisnotaplanet.exoplayerstreamingapp.data.rest.Api
 import com.plutoisnotaplanet.exoplayerstreamingapp.data.rest.ApiFactory
@@ -24,6 +28,20 @@ object ApiModule {
     ): ImageLoader {
         return ImageLoader.Builder(context)
             .okHttpClient { OkHttpClient() }
+            .memoryCache {
+                MemoryCache.Builder(context)
+                    .maxSizePercent(0.4)
+                    .build()
+            }
+            .diskCache {
+                DiskCache.Builder()
+                    .directory(context.cacheDir.resolve(BuildConfig.APPLICATION_ID))
+                    .maxSizePercent(0.1)
+                    .build()
+            }
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .networkCachePolicy(CachePolicy.ENABLED)
             .build()
     }
 

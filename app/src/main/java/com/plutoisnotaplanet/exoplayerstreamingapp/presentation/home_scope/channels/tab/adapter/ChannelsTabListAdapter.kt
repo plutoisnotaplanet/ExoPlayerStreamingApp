@@ -10,9 +10,9 @@ import com.plutoisnotaplanet.exoplayerstreamingapp.R
 import com.plutoisnotaplanet.exoplayerstreamingapp.databinding.ChannelViewHolderBinding
 import com.plutoisnotaplanet.exoplayerstreamingapp.databinding.ErrorViewHolderBinding
 import com.plutoisnotaplanet.exoplayerstreamingapp.databinding.LoadingViewHolderBinding
-import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.view_holders.ChannelTabErrorViewHolder
-import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.view_holders.ChannelTabLoadingViewHolder
-import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.view_holders.ChannelTabViewHolder
+import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.view_holders.ErrorViewHolder
+import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.view_holders.LoaderViewHolder
+import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.view_holders.ChannelViewHolder
 
 class ChannelsTabListAdapter(
     context: Context,
@@ -39,19 +39,19 @@ class ChannelsTabListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when(viewType) {
             R.layout.channel_view_holder -> {
-                ChannelTabViewHolder(
+                ChannelViewHolder(
                     binding = ChannelViewHolderBinding.inflate(inflater, parent, false),
                     imageLoader = imageLoader,
                     onAction = onAction
                 )
             }
             R.layout.loading_view_holder -> {
-                ChannelTabLoadingViewHolder(
+                LoaderViewHolder(
                     binding = LoadingViewHolderBinding.inflate(inflater, parent, false)
                 )
             }
             R.layout.error_view_holder -> {
-                ChannelTabErrorViewHolder(
+                ErrorViewHolder(
                     binding = ErrorViewHolderBinding.inflate(inflater, parent, false),
                 )
             }
@@ -61,8 +61,8 @@ class ChannelsTabListAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder) {
-            is ChannelTabViewHolder -> holder.bind(getItem(holder.absoluteAdapterPosition))
-            is ChannelTabErrorViewHolder -> holder.bind(getItem(holder.absoluteAdapterPosition))
+            is ChannelViewHolder -> holder.bind(getItem(holder.absoluteAdapterPosition))
+            is ErrorViewHolder -> holder.bind(getItem(holder.absoluteAdapterPosition))
         }
     }
 
@@ -79,7 +79,7 @@ class ChannelsTabListAdapter(
 
             if (payloadsFirst is List<*>) {
                 when(holder) {
-                    is ChannelTabViewHolder -> {
+                    is ChannelViewHolder -> {
                         val channel = (item as ChannelAdapterItem.ChannelItem).channel
                         payloadsFirst.forEach {
                             when (it) {
@@ -89,7 +89,7 @@ class ChannelsTabListAdapter(
                             }
                         }
                     }
-                    is ChannelTabErrorViewHolder -> {
+                    is ErrorViewHolder -> {
                         val message = (item as ChannelAdapterItem.ErrorItem).message
                         payloadsFirst.forEach {
                             when (it) {

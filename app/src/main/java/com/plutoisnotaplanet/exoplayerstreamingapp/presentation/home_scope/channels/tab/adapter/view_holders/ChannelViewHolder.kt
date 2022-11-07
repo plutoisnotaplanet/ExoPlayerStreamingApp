@@ -8,11 +8,10 @@ import coil.size.ViewSizeResolver
 import com.plutoisnotaplanet.exoplayerstreamingapp.R
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.extensions.setSafeOnClickListener
 import com.plutoisnotaplanet.exoplayerstreamingapp.databinding.ChannelViewHolderBinding
-import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.ChannelShortModel
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.ChannelAdapterItem
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.ChannelClickAction
 
-class ChannelTabViewHolder(
+class ChannelViewHolder(
     private val binding: ChannelViewHolderBinding,
     private val imageLoader: ImageLoader?,
     private val onAction: (ChannelClickAction) -> Unit
@@ -26,20 +25,18 @@ class ChannelTabViewHolder(
                 onAction(ChannelClickAction.OnChannelFavoriteClick(channelId))
             }
             clChannel.setSafeOnClickListener {
-                onAction(ChannelClickAction.OnChannelClick(channelUrl))
+                onAction(ChannelClickAction.OnChannelClick(channelId))
             }
         }
     }
 
     private val context = binding.root.context
     private var channelId: Int = 0
-    private var channelUrl: String = ""
     private var isChannelFavorite: Boolean = false
 
     fun bind(item: ChannelAdapterItem) {
         (item as ChannelAdapterItem.ChannelItem).let { item ->
             val channel = item.channel
-            channelUrl = channel.url ?: ""
             channelId = channel.id
             isChannelFavorite = channel.isFavorite
             updateChannelName(channel.name)

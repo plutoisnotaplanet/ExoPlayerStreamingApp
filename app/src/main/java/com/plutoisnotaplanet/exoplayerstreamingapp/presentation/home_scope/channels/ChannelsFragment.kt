@@ -1,21 +1,23 @@
 package com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.plutoisnotaplanet.exoplayerstreamingapp.R
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.Constants
 import com.plutoisnotaplanet.exoplayerstreamingapp.databinding.FragmentChannelsBinding
 import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.Response
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.common.BaseFragment
+import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.update
+import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -28,7 +30,7 @@ class ChannelsFragment : BaseFragment<ChannelsAction, ChannelsViewState, Channel
     override fun actionRender(action: ChannelsAction) {
         when(action) {
             is ChannelsAction.NavigateToExoPlayer -> {
-                findNavController().navigate(R.id.ExoPlayerFragment, bundleOf(Constants.Bundle.CHANNEL_URL to action.channelUrl))
+                openPlayerActivity(action.channelId)
             }
             else -> {}
         }
@@ -61,6 +63,12 @@ class ChannelsFragment : BaseFragment<ChannelsAction, ChannelsViewState, Channel
         super.onDestroyView()
         channelsTabStateAdapter = null
         _binding = null
+    }
+
+    private fun openPlayerActivity(channelId: Int) {
+        val i = Intent(requireContext(), PlayerActivity::class.java)
+        i.putExtra(Constants.Bundle.CHANNEL_ID, channelId)
+        requireActivity().startActivity(i)
     }
 
     private fun setupSearchViewListener() {

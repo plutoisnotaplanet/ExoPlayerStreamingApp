@@ -11,29 +11,10 @@ import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 @HiltAndroidApp
-class App: Application(), ImageLoaderFactory {
+class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-    }
-
-    override fun newImageLoader(): ImageLoader {
-        return ImageLoader.Builder(this)
-            .memoryCache {
-                MemoryCache.Builder(this)
-                    .maxSizePercent(0.4)
-                    .build()
-            }
-            .diskCache {
-                DiskCache.Builder()
-                    .directory(cacheDir.resolve(BuildConfig.APPLICATION_ID))
-                    .maxSizePercent(0.1)
-                    .build()
-            }
-            .memoryCachePolicy(CachePolicy.ENABLED)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .networkCachePolicy(CachePolicy.ENABLED)
-            .build()
     }
 }

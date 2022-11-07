@@ -7,6 +7,7 @@ import com.plutoisnotaplanet.exoplayerstreamingapp.data.rest.Api
 import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.error
 
@@ -17,8 +18,8 @@ class ChannelsRepositoryImpl @Inject constructor(
 
     private val channelsDao: ChannelsDao = dataBase.channelsDao
 
-    override suspend fun getPlaylist(): Flow<Response<List<ChannelShortModel>>> {
-        return channelsDao.getAllChannels().map { list ->
+    override suspend fun observePlayList(): Flow<Response<List<ChannelShortModel>>> {
+        return channelsDao.getAllChannelsFLow().map { list ->
             var playlist = list.map { it.toShortModel() }
             if (playlist.isEmpty()) {
                 try {
@@ -36,10 +37,14 @@ class ChannelsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updatePlayList() {
+        val response = api.loadPlayList().playList
+        channelsDao.save(response.map { it.toDbEntity() })
+    }
+
     override suspend fun changeFavoriteStatus(id: Int) {
         val channel = channelsDao.getChannelById(id)
-        channel.isFavorite = !channel.isFavorite
-        channelsDao.save(channel)
+        channelsDao.setFavorState(id = id, isFavorite = !channel.isFavorite)
     }
 
     override suspend fun getChannelById(id: Int): Channel {

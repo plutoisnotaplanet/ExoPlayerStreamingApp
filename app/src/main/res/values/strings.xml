@@ -3,6 +3,8 @@
     <string name="tv_all">Все</string>
     <string name="tv_favorites">Избранные</string>
     <string name="sv_hint">Напишите название телеканала</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_player">PlayerActivity</string>
+    <string name="error_on_loading_video">Ошибка при загрузке видео</string>
+    <string name="error_on_loading_channel">Ошибка при загрузке канала</string>
 </resources>

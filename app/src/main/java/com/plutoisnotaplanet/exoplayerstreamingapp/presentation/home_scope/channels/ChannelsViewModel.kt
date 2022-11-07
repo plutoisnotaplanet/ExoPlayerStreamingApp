@@ -27,22 +27,17 @@ class ChannelsViewModel @Inject constructor(
     private val channelsFlow = channelsFilter
         .throttleLatest(300)
         .flatMapLatest { filter ->
-            channelsUseCase.getChannelsWithFilter(filter.trim())
+            channelsUseCase.observePlayListWithFilter(filter.trim())
         }
         .flowOn(Dispatchers.IO)
         .shareIn(viewModelScope, SharingStarted.WhileSubscribed(), replay = 1)
 
     private fun observeChannelsWithFilter() {
         viewModelScope.launchOnIoWithProgress {
-            channelsFlow.collectLatest { response ->
-                response
-                    .onSuccess { channelViewState ->
-                        _viewStateFlow.emit(Response.Success(channelViewState))
-                    }
-                    .onFailure {
-                        _viewStateFlow.emit(Response.Error(it))
-                    }
-            }
+            channelsFlow
+                .collectLatest { response ->
+                    _viewStateFlow.emit(response)
+                }
         }
     }
 
@@ -52,7 +47,7 @@ class ChannelsViewModel @Inject constructor(
                 changeFavorState(action.id)
             }
             is ChannelClickAction.OnChannelClick -> {
-                setAction(ChannelsAction.NavigateToExoPlayer(action.url))
+                setAction(ChannelsAction.NavigateToExoPlayer(action.id))
             }
         }
     }
@@ -65,7 +60,16 @@ class ChannelsViewModel @Inject constructor(
         }
     }
 
+    fun updatePlayList() {
+        viewModelScope.launchOnIo {
+            channelsUseCase.updatePlayList()
+                .onSuccess { Timber.e("success") }
+                .onFailure { Timber.e("error") }
+        }
+    }
+
     init {
         observeChannelsWithFilter()
+        updatePlayList()
     }
 }

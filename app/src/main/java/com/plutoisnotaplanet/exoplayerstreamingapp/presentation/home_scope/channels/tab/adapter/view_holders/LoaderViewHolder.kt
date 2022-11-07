@@ -3,6 +3,6 @@ package com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.chan
 import androidx.recyclerview.widget.RecyclerView
 import com.plutoisnotaplanet.exoplayerstreamingapp.databinding.LoadingViewHolderBinding
 
-class ChannelTabLoadingViewHolder(
+class LoaderViewHolder(
     binding: LoadingViewHolderBinding
 ): RecyclerView.ViewHolder(binding.root)

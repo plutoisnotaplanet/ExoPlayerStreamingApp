@@ -29,10 +29,4 @@ object UtilsModule {
             .fallbackToDestructiveMigration()
             .build()
     }
-
-    @Singleton
-    @Provides
-    fun provideImageLoader(@ApplicationContext context: Context): ImageLoader {
-        return context.imageLoader
-    }
 }

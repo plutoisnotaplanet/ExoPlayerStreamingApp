@@ -78,6 +78,7 @@ object ChannelTabDiffCallback : ItemCallback<ChannelAdapterItem>() {
                             super.getChangePayload(oldItem, newItem)
                         } else {
                             diffList.add(NEW_ERROR_MESSAGE)
+                            diffList
                         }
                     }
                     else -> super.getChangePayload(oldItem, newItem)

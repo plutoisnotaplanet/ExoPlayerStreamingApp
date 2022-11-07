@@ -10,4 +10,19 @@
     <color name="sv_background">#404247</color>
     <color name="sv_on_background">#808185</color>
     <color name="channel_desc_text_color">#E9EAEF</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
+
+    <color name="selected_quality_color">#0077FF</color>
+
+    <color name="quality_text_color">#B31A1C23</color>
+
+    <color name="white_50">#80FFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="black_50">#80000000</color>
+    <color name="live_red">#FF3144</color>
 </resources>

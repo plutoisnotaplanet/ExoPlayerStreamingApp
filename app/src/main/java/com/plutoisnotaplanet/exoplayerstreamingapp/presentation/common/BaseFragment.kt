@@ -38,7 +38,7 @@ abstract class BaseFragment<SE,VS, VM: BaseViewModel<SE, VS>, VB: ViewBinding>: 
 
     protected fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.singleActionFlow.collect { state ->
                     state?.let { actionRender(it) }
                 }

@@ -4,6 +4,7 @@ import com.plutoisnotaplanet.exoplayerstreamingapp.data.repostiory.ChannelsRepos
 import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.Response
 import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.runResulting
 import com.plutoisnotaplanet.exoplayerstreamingapp.domain.usecases.ExoPlayerUseCase
+import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.player.PlayerViewState
 import javax.inject.Inject
 
 class ExoPlayerInteractor @Inject constructor(
@@ -11,10 +12,10 @@ class ExoPlayerInteractor @Inject constructor(
 ): ExoPlayerUseCase {
 
 
-    override suspend fun getExoPlayerUrlById(channelId: Int): Response<String> {
+    override suspend fun getChannelDataById(channelId: Int): Response<PlayerViewState> {
         return runResulting {
             val channel = channelsRepository.getChannelById(channelId)
-            channel.url ?: ""
+            channel.toPlayerViewState()
         }
     }
 }

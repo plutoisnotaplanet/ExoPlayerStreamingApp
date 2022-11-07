@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface ChannelsRepository {
 
-    suspend fun getPlaylist(): Flow<Response<List<ChannelShortModel>>>
+    suspend fun updatePlayList()
+
+    suspend fun observePlayList(): Flow<Response<List<ChannelShortModel>>>
 
     suspend fun changeFavoriteStatus(id: Int)
 

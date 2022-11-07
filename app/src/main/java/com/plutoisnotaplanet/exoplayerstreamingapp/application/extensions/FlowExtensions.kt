@@ -10,23 +10,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 import java.util.*
 
-var lastEmissionTime: Long? = 0L
-@FlowPreview
-@ExperimentalCoroutinesApi
-fun <T> Flow<T>.throttleFirst(windowDuration: Long): Flow<T> = callbackFlow {
-    collect { upstream ->
-        if (lastEmissionTime == null) lastEmissionTime = 0L
-        val currentTime = System.currentTimeMillis()
-        val mayEmit = currentTime - lastEmissionTime!! > windowDuration
-        if (mayEmit) {
-            lastEmissionTime = currentTime
-            send(upstream)
-        }
-    }
-
-    awaitClose { lastEmissionTime = null }
-}
-
 fun <T> Flow<T>.throttleLatest(periodMillis: Long): Flow<T> {
     return channelFlow {
         var lastValue: T?

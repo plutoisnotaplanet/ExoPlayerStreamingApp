@@ -9,6 +9,5 @@ object Constants {
 
     object Bundle {
         const val CHANNEL_ID = "channel_id"
-        const val CHANNEL_URL = "channel_url"
     }
 }

@@ -2,6 +2,7 @@ package com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.chan
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
@@ -15,6 +16,7 @@ import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.Response
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.common.BaseFragment
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.ChannelsViewModel
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.ChannelsAction
+import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.ChannelsFragment
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.ChannelsViewState
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.ChannelAdapterItem
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.ChannelsTabItemDecorator
@@ -55,6 +57,7 @@ class ChannelsTabFragment :
                 channelsTabAdapter?.submitList(listOf(ChannelAdapterItem.LoadingItem))
             }
             is Response.Success -> {
+                disableRefresh()
                 val playListTabModel = state.data
                 when(tabState) {
                     ChannelsTabState.ALL.ordinal -> {
@@ -75,6 +78,7 @@ class ChannelsTabFragment :
                 }
             }
             is Response.Error -> {
+                disableRefresh()
                 channelsTabAdapter?.submitList(listOf(ChannelAdapterItem.ErrorItem(state.error.message ?: "Error")))
             }
         }
@@ -97,6 +101,7 @@ class ChannelsTabFragment :
         super.onViewCreated(view, savedInstanceState)
         imageLoader = requireContext().applicationContext.imageLoader
         setupRecyclerView()
+        setupBindings()
     }
 
     override fun onDestroyView() {
@@ -115,5 +120,15 @@ class ChannelsTabFragment :
         recyclerView.addItemDecoration(ChannelsTabItemDecorator(requireContext()))
     }
 
+    private fun setupBindings() {
+        binding.swipeRefreshChannels.setOnRefreshListener {
+            viewModel.updatePlayList()
+        }
+    }
+
+
+    private fun disableRefresh() {
+        binding.swipeRefreshChannels.isRefreshing = false
+    }
 
 }

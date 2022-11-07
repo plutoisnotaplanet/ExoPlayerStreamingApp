@@ -29,14 +29,26 @@ interface ChannelsDao {
     suspend fun getChannelById(id: Int): ChannelEntity
 
     @Query("SELECT * FROM channels_db")
-    fun getAllChannels(): Flow<List<ChannelEntity>>
+    fun getAllChannelsFLow(): Flow<List<ChannelEntity>>
+
+    @Query("SELECT * FROM channels_db")
+    fun getAllChannels(): List<ChannelEntity>
 
     @Transaction
     suspend fun save(value: ChannelEntity) {
         val exist = hasChannel(value.id)
         if (exist) {
-            update(value)
+            val currentChannel = getChannelById(value.id)
+            val updatedChannel = value.copy(isFavorite = currentChannel.isFavorite)
+            update(updatedChannel)
         } else insert(value)
+    }
+
+    @Transaction
+    suspend fun setFavorState(id: Int, isFavorite: Boolean) {
+        val channel = getChannelById(id)
+        channel.isFavorite = isFavorite
+        update(channel)
     }
 
     @Transaction

@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.plutoisnotaplanet.exoplayerstreamingapp.databinding.ErrorViewHolderBinding
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.ChannelAdapterItem
 
-class ChannelTabErrorViewHolder(
+class ErrorViewHolder(
     private val binding: ErrorViewHolderBinding
 ): RecyclerView.ViewHolder(binding.root) {
 

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".application.App"
@@ -13,22 +13,29 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.ExoPlayerStreamingApp"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.home_scope.player.PlayerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:exported="true"
+            android:screenOrientation="userLandscape"
+            android:label="@string/title_activity_player"
+            android:theme="@style/Theme.ExoPlayerStreamingApp.Fullscreen" />
+        <activity
             android:name=".presentation.main.MainActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:exported="true"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.ExoPlayerStreamingApp"
-            android:exported="true">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

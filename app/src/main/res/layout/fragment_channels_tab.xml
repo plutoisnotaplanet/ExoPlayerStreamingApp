@@ -7,10 +7,18 @@
     android:background="@color/background"
     tools:context=".presentation.home_scope.channels.tab.ChannelsTabFragment">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_channels"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_channels"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/channel_view_holder" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </FrameLayout>

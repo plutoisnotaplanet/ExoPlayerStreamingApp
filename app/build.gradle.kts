@@ -52,7 +52,7 @@ dependencies {
     implementation (Dependencies.AndroidX.constraintLayout)
     implementation (Dependencies.AndroidX.viewBinding)
     implementation (Dependencies.AndroidX.fragment)
-    implementation ("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
+    implementation (Dependencies.AndroidX.swipeRefreshLayout)
 
 
     //Navigation
@@ -65,14 +65,11 @@ dependencies {
     implementation (Dependencies.Network.okhttp)
     implementation (Dependencies.Network.logInterceptor)
     implementation (Dependencies.Network.gsonConverter)
-    testImplementation (Dependencies.Network.mock)
 
     //exoplayer
     implementation (Dependencies.ExoPlayer.core)
-    implementation (Dependencies.ExoPlayer.dash)
     implementation (Dependencies.ExoPlayer.ui)
     implementation (Dependencies.ExoPlayer.hls)
-    implementation (Dependencies.ExoPlayer.smoothstreaming)
 
     //coil
     implementation (Dependencies.Coil.core)
@@ -93,7 +90,6 @@ dependencies {
 
     // hilt
     implementation (Dependencies.Hilt.core)
-    implementation (Dependencies.Hilt.composeNavigation)
     kapt (Dependencies.Hilt.compiler)
     kapt (Dependencies.Hilt.androidXCompiler)
     kaptAndroidTest (Dependencies.Hilt.kaptTest)

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.Response
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 
@@ -12,8 +13,12 @@ abstract class BaseViewModel<SE, VS> : ViewModel() {
     protected val _singleActionFlow = MutableSharedFlow<SE>()
     val singleActionFlow: SharedFlow<SE> = _singleActionFlow.asSharedFlow()
 
-    protected val _viewStateFlow: MutableStateFlow<Response<VS>> = MutableStateFlow(Response.Loading)
-    val viewStateFlow: StateFlow<Response<VS>> = _viewStateFlow.asStateFlow()
+    protected val _viewStateFlow: MutableSharedFlow<Response<VS>> = MutableSharedFlow(
+        replay = 1,
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val viewStateFlow: SharedFlow<Response<VS>> = _viewStateFlow.asSharedFlow()
 
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         Timber.e(throwable.message)

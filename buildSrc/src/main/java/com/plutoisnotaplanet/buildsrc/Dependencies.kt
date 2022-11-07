@@ -33,10 +33,8 @@ object Dependencies {
     object Hilt {
         private const val hiltCoreVersion = "2.44"
         private const val hiltVersion = "1.0.0"
-        private const val hiltComposeVersion = "1.0.0"
         const val gradleHilt = "com.google.dagger:hilt-android-gradle-plugin:$hiltCoreVersion"
         const val core = "com.google.dagger:hilt-android:$hiltCoreVersion"
-        const val composeNavigation = "androidx.hilt:hilt-navigation-compose:$hiltComposeVersion"
         const val compiler = "com.google.dagger:hilt-compiler:$hiltCoreVersion"
         const val androidXCompiler = "androidx.hilt:hilt-compiler:$hiltVersion"
         const val test = "com.google.dagger:hilt-android-testing:$hiltCoreVersion"
@@ -88,6 +86,7 @@ object Dependencies {
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.1"
         const val fragment = "androidx.fragment:fragment-ktx:1.5.4"
         const val viewBinding = "androidx.databinding:viewbinding:7.3.1"
+        const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
         object Navigation {
             private const val version = "2.5.3"

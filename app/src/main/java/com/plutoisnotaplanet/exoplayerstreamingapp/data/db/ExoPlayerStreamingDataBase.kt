@@ -10,7 +10,8 @@ import com.plutoisnotaplanet.exoplayerstreamingapp.data.db.entities.ChannelEntit
 @Database(
     entities = [
         ChannelEntity::class
-    ], version = 2
+    ], version = 3,
+    exportSchema = false
 )
 
 @TypeConverters(Converters::class)

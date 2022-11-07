@@ -13,15 +13,14 @@ class ChannelsInteractor @Inject constructor(
     private val channelsRepository: ChannelsRepository
 ) : ChannelsUseCase {
 
-    override suspend fun getChannelsWithFilter(filter: String?): Flow<Response<ChannelsViewState>> =
-        channelsRepository.getPlaylist().flatMapLatest { response ->
+    override suspend fun observePlayListWithFilter(filter: String?): Flow<Response<ChannelsViewState>> =
+        channelsRepository.observePlayList().flatMapLatest { response ->
             flow {
                 response
                     .onSuccess { playList ->
                         val filteredPlayList = playList.filter { channel ->
                             if (!filter.isNullOrBlank()) {
-                                channel.name?.contains(filter, true) ?: true ||
-                                        channel.description?.contains(filter, true) ?: true
+                                channel.name?.contains(filter, true) ?: true
                             } else {
                                 true
                             }
@@ -55,6 +54,12 @@ class ChannelsInteractor @Inject constructor(
                     }
             }
         }.flowOn(Dispatchers.IO)
+
+    override suspend fun updatePlayList(): Response<Unit> {
+        return runResulting {
+            channelsRepository.updatePlayList()
+        }
+    }
 
     override suspend fun changeFavoriteStatus(id: Int): Response<Unit> {
         return runResulting {

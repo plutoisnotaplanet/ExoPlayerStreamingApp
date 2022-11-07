@@ -10,9 +10,4 @@
         android:name="com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.ChannelsFragment"
         tools:layot="@layout/fragment_channels" />
 
-    <fragment
-        android:id="@+id/ExoPlayerFragment"
-        tools:layout="@layout/fragment_exo_player"
-        android:name="com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.player.ExoPlayerFragment"/>
-
 </navigation>
