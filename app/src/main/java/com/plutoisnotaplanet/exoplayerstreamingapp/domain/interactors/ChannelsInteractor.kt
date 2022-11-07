@@ -6,6 +6,7 @@ import com.plutoisnotaplanet.exoplayerstreamingapp.domain.usecases.ChannelsUseCa
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.ChannelsViewState
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.channels.tab.adapter.ChannelAdapterItem
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -13,6 +14,7 @@ class ChannelsInteractor @Inject constructor(
     private val channelsRepository: ChannelsRepository
 ) : ChannelsUseCase {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun observePlayListWithFilter(filter: String?): Flow<Response<ChannelsViewState>> =
         channelsRepository.observePlayList().flatMapLatest { response ->
             flow {

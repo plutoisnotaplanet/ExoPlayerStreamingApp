@@ -30,6 +30,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.util.MimeTypes
 import com.plutoisnotaplanet.exoplayerstreamingapp.R
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.Constants
+import com.plutoisnotaplanet.exoplayerstreamingapp.application.Constants.View.CHANNEL_IV_SIZE
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.extensions.convertIntToDp
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.extensions.setSafeOnClickListener
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.extensions.showToast
@@ -51,10 +52,9 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
     PlayerControllerDelegate by PlayerController() {
 
     private val viewModel: PlayerViewModel by viewModels()
+    private var binding: ActivityPlayerBinding? = null
 
     private var player: ExoPlayer? = null
-
-    private var binding: ActivityPlayerBinding? = null
     private var imageLoader: ImageLoader? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +85,7 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
         super.onDestroy()
         binding = null
         imageLoader = null
+        qualityDialog = null
     }
 
     private fun prepareIntentForChannelId(intent: Intent?) {
@@ -135,6 +136,7 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
         binding?.videoView?.setControllerVisibilityListener { visibility ->
             if (visibility != View.VISIBLE) {
                 hideSystemUi()
+                hideQualityDialog()
             }
         }
     }
@@ -144,7 +146,7 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
             binding?.videoView?.findViewById<ConstraintLayout>(R.id.controller_view)
         val binding = LayoutExoplayerControlsViewBinding.bind(controllerView!!)
 
-        val sizeInDp = convertIntToDp(44)
+        val sizeInDp = convertIntToDp(CHANNEL_IV_SIZE)
         with(binding) {
             exoProgress.hideScrubber(true)
             playerTtTv.text = playerViewState.title

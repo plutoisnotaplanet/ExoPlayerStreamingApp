@@ -24,10 +24,8 @@ object Dependencies {
     object ExoPlayer {
         private const val version = "2.18.1"
         const val core = "com.google.android.exoplayer:exoplayer-core:$version"
-        const val dash = "com.google.android.exoplayer:exoplayer-dash:$version"
         const val ui = "com.google.android.exoplayer:exoplayer-ui:$version"
         const val hls = "com.google.android.exoplayer:exoplayer-hls:$version"
-        const val smoothstreaming = "com.google.android.exoplayer:exoplayer-smoothstreaming:$version"
     }
 
     object Hilt {
@@ -49,7 +47,6 @@ object Dependencies {
         const val logInterceptor = "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
         const val gsonConverter = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
         const val gson = "com.google.code.gson:gson:$retrofitVersion"
-        const val mock = "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
     }
 
     object Coil {
@@ -96,7 +93,6 @@ object Dependencies {
 
         object Lifecycle {
             private const val lifecycleVersion = "2.5.1"
-            const val extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
             const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
             const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
@@ -112,7 +108,6 @@ object Dependencies {
                 const val junit = "androidx.test.ext:junit-ktx:$version"
             }
 
-            const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
         }
     }
 }

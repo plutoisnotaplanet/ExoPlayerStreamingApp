@@ -8,9 +8,12 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.plutoisnotaplanet.exoplayerstreamingapp.R
+import com.plutoisnotaplanet.exoplayerstreamingapp.application.extensions.calculateQualityDialogPosition
+import com.plutoisnotaplanet.exoplayerstreamingapp.application.extensions.convertIntToDp
 import com.plutoisnotaplanet.exoplayerstreamingapp.databinding.LayoutQualityDialogBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 class QualityDialog : DialogFragment(R.layout.layout_quality_dialog) {
@@ -56,8 +59,9 @@ class QualityDialog : DialogFragment(R.layout.layout_quality_dialog) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
 
             val wlp: WindowManager.LayoutParams = window.attributes
-            window.setGravity(Gravity.BOTTOM)
-            wlp.gravity = Gravity.END
+            val coordinates = requireContext().calculateQualityDialogPosition(qualityList.size)
+            wlp.x = coordinates.x
+            wlp.y = coordinates.y
             window.attributes = wlp
         }
         return dialog

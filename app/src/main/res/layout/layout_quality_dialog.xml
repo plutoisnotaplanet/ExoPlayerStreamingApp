@@ -8,6 +8,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_quality"
         android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:foregroundGravity="bottom"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_height="match_parent"/>
 

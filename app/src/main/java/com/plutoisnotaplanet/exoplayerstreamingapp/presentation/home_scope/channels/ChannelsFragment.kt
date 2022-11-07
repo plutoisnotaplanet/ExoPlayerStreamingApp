@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.plutoisnotaplanet.exoplayerstreamingapp.R
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.Constants
@@ -17,7 +16,6 @@ import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.common.BaseFragm
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.update
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -29,7 +27,7 @@ class ChannelsFragment : BaseFragment<ChannelsAction, ChannelsViewState, Channel
 
     override fun actionRender(action: ChannelsAction) {
         when(action) {
-            is ChannelsAction.NavigateToExoPlayer -> {
+            is ChannelsAction.OpenPlayerActivity -> {
                 openPlayerActivity(action.channelId)
             }
             else -> {}

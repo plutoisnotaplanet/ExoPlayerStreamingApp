@@ -2,7 +2,6 @@ package com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.chan
 
 import androidx.lifecycle.viewModelScope
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.extensions.throttleLatest
-import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.Response
 import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.onFailure
 import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.onSuccess
 import com.plutoisnotaplanet.exoplayerstreamingapp.domain.usecases.ChannelsUseCase
@@ -47,7 +46,7 @@ class ChannelsViewModel @Inject constructor(
                 changeFavorState(action.id)
             }
             is ChannelClickAction.OnChannelClick -> {
-                setAction(ChannelsAction.NavigateToExoPlayer(action.id))
+                setAction(ChannelsAction.OpenPlayerActivity(action.id))
             }
         }
     }

@@ -10,4 +10,8 @@ object Constants {
     object Bundle {
         const val CHANNEL_ID = "channel_id"
     }
+
+    object View {
+        const val CHANNEL_IV_SIZE = 44
+    }
 }

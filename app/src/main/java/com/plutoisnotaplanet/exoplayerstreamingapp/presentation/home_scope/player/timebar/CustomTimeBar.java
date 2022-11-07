@@ -312,7 +312,7 @@ public class CustomTimeBar extends View implements TimeBar {
                 int playedAdMarkerColor =
                         a.getInt(
                                 R.styleable.DefaultTimeBar_played_ad_marker_color, DEFAULT_PLAYED_AD_MARKER_COLOR);
-                playedPaint.setShader(new LinearGradient(0, 0, pxToDp(density, 1920), 0, GRADIENT_START, GRADIENT_STOP, Shader.TileMode.CLAMP));
+                playedPaint.setShader(new LinearGradient(0, 0, getResources().getDisplayMetrics().widthPixels, 0, GRADIENT_START, GRADIENT_STOP, Shader.TileMode.CLAMP));
                 scrubberPaint.setColor(scrubberColor);
                 bufferedPaint.setColor(bufferedColor);
                 unplayedPaint.setColor(unplayedColor);

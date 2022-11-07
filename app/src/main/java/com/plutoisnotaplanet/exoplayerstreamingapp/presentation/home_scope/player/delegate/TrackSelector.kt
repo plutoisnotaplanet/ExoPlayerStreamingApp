@@ -12,6 +12,7 @@ import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.playe
 
 class TrackSelector: TrackSelectorDelegate {
 
+    override var qualityDialog: QualityDialog? = null
 
     override fun selectVideoTrack(
         fragmentManager: FragmentManager,
@@ -44,7 +45,7 @@ class TrackSelector: TrackSelectorDelegate {
 
         val tempTracks = viewModel.getQualityMap().keys.sortedByDescending { it.positionInList }
 
-        QualityDialog.newInstance(tempTracks).apply {
+        qualityDialog = QualityDialog.newInstance(tempTracks).apply {
             onSelectedQuality = { quality ->
                 val qualityIndex = viewModel.getQualityMap()[quality]
                 if (qualityIndex != null) {
@@ -53,7 +54,12 @@ class TrackSelector: TrackSelectorDelegate {
                 }
                 hideSystemUi()
             }
-        }.show(fragmentManager, QualityDialog.TAG)
+        }
+        qualityDialog?.show(fragmentManager, QualityDialog.TAG)
+    }
+
+    override fun hideQualityDialog() {
+        qualityDialog?.dismiss()
     }
 
     private fun setVideoTrack(
