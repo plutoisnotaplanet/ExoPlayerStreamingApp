@@ -55,12 +55,9 @@ class ChannelsFragment : BaseFragment<ChannelsAction, ChannelsViewState, Channel
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
         setupSearchViewListener()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        channelsTabStateAdapter = null
-        _binding = null
+        nulifyOnDestroy {
+            channelsTabStateAdapter = null
+        }
     }
 
     private fun openPlayerActivity(channelId: Int) {

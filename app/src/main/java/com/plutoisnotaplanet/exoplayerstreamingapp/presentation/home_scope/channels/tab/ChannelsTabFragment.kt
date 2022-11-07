@@ -102,13 +102,10 @@ class ChannelsTabFragment :
         imageLoader = requireContext().applicationContext.imageLoader
         setupRecyclerView()
         setupBindings()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        channelsTabAdapter = null
-        imageLoader = null
-        _binding = null
+        nulifyOnDestroy {
+            channelsTabAdapter = null
+            imageLoader = null
+        }
     }
 
     private fun setupRecyclerView() {
