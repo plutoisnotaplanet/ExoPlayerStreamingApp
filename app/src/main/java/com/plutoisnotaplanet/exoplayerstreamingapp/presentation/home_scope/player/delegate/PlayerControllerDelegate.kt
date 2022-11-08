@@ -6,12 +6,13 @@ import com.google.android.exoplayer2.Player
 
 interface PlayerControllerDelegate {
 
-    fun initializePlayer(
+    fun startPlayer(
         context: Context,
+        exoPlayer: ExoPlayer,
         url: String?
-    ): ExoPlayer
+    )
 
-    fun releasePlayer(
+    fun stopPlayer(
         player: Player?
     )
 }

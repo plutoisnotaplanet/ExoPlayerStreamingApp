@@ -17,17 +17,6 @@ import coil.ImageLoader
 import coil.imageLoader
 import coil.request.ImageRequest
 import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.extractor.ts.DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.hls.DefaultHlsDataSourceFactory
-import com.google.android.exoplayer2.source.hls.DefaultHlsExtractorFactory
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.source.hls.playlist.DefaultHlsPlaylistParserFactory
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
-import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.util.MimeTypes
 import com.plutoisnotaplanet.exoplayerstreamingapp.R
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.Constants
 import com.plutoisnotaplanet.exoplayerstreamingapp.application.Constants.View.CHANNEL_IV_SIZE
@@ -44,7 +33,7 @@ import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.playe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -54,8 +43,9 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
     private val viewModel: PlayerViewModel by viewModels()
     private var binding: ActivityPlayerBinding? = null
 
-    private var player: ExoPlayer? = null
     private var imageLoader: ImageLoader? = null
+
+    @Inject lateinit var player: ExoPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,13 +108,12 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
     }
 
     private fun destroyPlayer() {
-        releasePlayer(player)
-        player = null
+        stopPlayer(player)
     }
 
     private fun setupPlayer(data: PlayerViewState) {
         initializePlayerBindings(data)
-        player = initializePlayer(this@PlayerActivity, data.url)
+        startPlayer(this, player, data.url)
         binding?.videoView?.player = player
 
         player!!.addListener(object : Player.Listener {
@@ -175,9 +164,9 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
     private fun hideSystemUi() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowInsetsControllerCompat(window, binding!!.videoView).let { controller ->
-            controller.hide(WindowInsetsCompat.Type.systemBars())
             controller.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller.hide(WindowInsetsCompat.Type.systemBars())
         }
     }
 }

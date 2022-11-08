@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.util.MimeTypes
+import com.plutoisnotaplanet.exoplayerstreamingapp.application.Constants
 
 class PlayerController: PlayerControllerDelegate {
 
@@ -20,28 +21,24 @@ class PlayerController: PlayerControllerDelegate {
     private var currentItem = 0
     private var playbackPosition = 0L
 
-    override fun initializePlayer(
-        context: Context,
-        url: String?
-    ): ExoPlayer {
-        val bandWidthMeter = DefaultBandwidthMeter.Builder(context).build()
-        val trackSelectorFactory = AdaptiveTrackSelection.Factory()
-        val trackSelector = DefaultTrackSelector(context, trackSelectorFactory)
-        val rendererFactory = DefaultRenderersFactory(context).setEnableDecoderFallback(true)
-        val loadControl = DefaultLoadControl.Builder()
-            .setBufferDurationsMs(60000, 60000, 2500, 2500).build()
-        return ExoPlayer.Builder(context)
-            .setTrackSelector(trackSelector)
-            .setBandwidthMeter(bandWidthMeter)
-            .setRenderersFactory(rendererFactory)
-            .setLoadControl(loadControl)
-            .build()
-            .also { exoPlayer ->
-                exoPlayer.setMediaSource(buildHlsMediaSource(context,url))
-                exoPlayer.playWhenReady = playWhenReady
-                exoPlayer.seekTo(currentItem, playbackPosition)
-                exoPlayer.prepare()
-            }
+    override fun startPlayer(context: Context, exoPlayer: ExoPlayer, url: String?) {
+        exoPlayer.also { player ->
+            player.setMediaSource(buildHlsMediaSource(context,url))
+            player.playWhenReady = playWhenReady
+            player.seekTo(currentItem, playbackPosition)
+            player.prepare()
+        }
+    }
+
+    override fun stopPlayer(
+        player: Player?,
+    ) {
+        player?.let { exoPlayer ->
+            playbackPosition = exoPlayer.currentPosition
+            currentItem = exoPlayer.currentMediaItemIndex
+            playWhenReady = exoPlayer.playWhenReady
+            exoPlayer.stop()
+        }
     }
 
     private fun buildHlsMediaSource(context: Context, url: String?): MediaSource {
@@ -56,16 +53,5 @@ class PlayerController: PlayerControllerDelegate {
             .setPlaylistParserFactory(hlsPlayListFactory)
             .setExtractorFactory(extractorFactory)
             .createMediaSource(item.build())
-    }
-
-    override fun releasePlayer(
-        player: Player?,
-    ) {
-        player?.let { exoPlayer ->
-            playbackPosition = exoPlayer.currentPosition
-            currentItem = exoPlayer.currentMediaItemIndex
-            playWhenReady = exoPlayer.playWhenReady
-            exoPlayer.release()
-        }
     }
 }

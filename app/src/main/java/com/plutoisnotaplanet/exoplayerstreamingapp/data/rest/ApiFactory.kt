@@ -35,9 +35,9 @@ object ApiFactory {
         responseInterceptor: ResponseInterceptor
     ): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(Constants.ApiConstants.TIMEOUT, TimeUnit.MINUTES)
-            .writeTimeout(Constants.ApiConstants.TIMEOUT, TimeUnit.MINUTES)
-            .readTimeout(Constants.ApiConstants.TIMEOUT, TimeUnit.MINUTES)
+            .connectTimeout(Constants.ApiConstants.TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(Constants.ApiConstants.TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(Constants.ApiConstants.TIMEOUT, TimeUnit.SECONDS)
             .apply {
                 addInterceptor(loggingInterceptor)
                 addInterceptor(responseInterceptor)
