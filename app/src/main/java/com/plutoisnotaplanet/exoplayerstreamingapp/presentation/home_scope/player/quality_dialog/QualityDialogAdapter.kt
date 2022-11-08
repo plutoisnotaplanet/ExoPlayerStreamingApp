@@ -14,7 +14,7 @@ class QualityDialogAdapter(
 
     private val inflater = LayoutInflater.from(context)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QualityItemViewHolder {
-        return QualityItemViewHolder(QualityViewHolderBinding.inflate(inflater, parent, false)) {
+        return QualityItemViewHolder(QualityViewHolderBinding.inflate(inflater, parent, false), ::isLastInList) {
             currentList.forEach { item ->
                 item.isSelected = false
             }
@@ -28,5 +28,8 @@ class QualityDialogAdapter(
         holder.bind(getItem(holder.absoluteAdapterPosition))
     }
 
+    private fun isLastInList(position: Int): Boolean {
+        return position == currentList.size - 1
+    }
 
 }

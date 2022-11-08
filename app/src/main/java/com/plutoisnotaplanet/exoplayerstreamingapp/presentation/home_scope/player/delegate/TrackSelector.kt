@@ -1,27 +1,87 @@
 package com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.player.delegate
 
+import android.content.Context
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Tracks
 import com.google.android.exoplayer2.trackselection.TrackSelectionOverride
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.player.PlayerViewModel
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.player.quality_dialog.QualityDialog
+import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.player.quality_dialog.QualityDialogAdapter
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.player.quality_dialog.QualityItem
 import com.plutoisnotaplanet.exoplayerstreamingapp.presentation.home_scope.player.quality_dialog.toQualityItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TrackSelector: TrackSelectorDelegate {
 
     override var qualityDialog: QualityDialog? = null
+    override var qualityRv: RecyclerView? = null
+    private var qualityDialogAdapter: QualityDialogAdapter? = null
 
-    override fun selectVideoTrack(
+    override fun selectVideoTrackWithList(
+        context: Context,
+        player: ExoPlayer?,
+        viewModel: PlayerViewModel,
+        recyclerView: RecyclerView
+    ) {
+        qualityRv = recyclerView
+        val trackData = prepareTrackList(player, viewModel)
+
+        if (qualityDialogAdapter == null) {
+            qualityDialogAdapter = QualityDialogAdapter(context) { quality ->
+                val qualityIndex = viewModel.getQualityMap()[quality]
+                if (qualityIndex != null) {
+                    setVideoTrack(player, trackData.second, qualityIndex)
+                    viewModel.setSelectedQuality(quality)
+                }
+                viewModel.viewModelScope.launch {
+                    delay(300)
+                    recyclerView.isVisible = false
+                }
+            }
+        }
+        recyclerView.adapter = qualityDialogAdapter
+        qualityDialogAdapter?.submitList(trackData.first)
+        recyclerView.isVisible = !recyclerView.isVisible
+    }
+
+    override fun selectVideoTrackWithDialog(
         fragmentManager: FragmentManager,
         player: ExoPlayer?,
         viewModel: PlayerViewModel,
         hideSystemUi: () -> Unit
     ) {
-        val tracks = player?.currentTracks ?: return
+
+        val trackData = prepareTrackList(player, viewModel)
+
+        qualityDialog = QualityDialog.newInstance(trackData.first).apply {
+            onSelectedQuality = { quality ->
+                val qualityIndex = viewModel.getQualityMap()[quality]
+                if (qualityIndex != null) {
+                    setVideoTrack(player, trackData.second, qualityIndex)
+                    viewModel.setSelectedQuality(quality)
+                }
+                hideSystemUi()
+            }
+        }
+        qualityDialog?.show(fragmentManager, QualityDialog.TAG)
+    }
+
+    override fun hideQualityDialog() {
+        qualityDialog?.dismiss()
+    }
+
+    private fun prepareTrackList(player: ExoPlayer?, viewModel: PlayerViewModel): TrackSelectorData {
+        val tracks = player?.currentTracks
         var group: Tracks.Group? = null
+
+        requireNotNull(tracks)
 
         for (trackGroup in tracks.groups) {
             val trackType: Int = trackGroup.type
@@ -44,22 +104,7 @@ class TrackSelector: TrackSelectorDelegate {
         viewModel.addInQualityMap(QualityItem.AUTO, -1)
 
         val tempTracks = viewModel.getQualityMap().keys.sortedByDescending { it.positionInList }
-
-        qualityDialog = QualityDialog.newInstance(tempTracks).apply {
-            onSelectedQuality = { quality ->
-                val qualityIndex = viewModel.getQualityMap()[quality]
-                if (qualityIndex != null) {
-                    setVideoTrack(player, group, qualityIndex)
-                    viewModel.setSelectedQuality(quality)
-                }
-                hideSystemUi()
-            }
-        }
-        qualityDialog?.show(fragmentManager, QualityDialog.TAG)
-    }
-
-    override fun hideQualityDialog() {
-        qualityDialog?.dismiss()
+        return tempTracks to group
     }
 
     private fun setVideoTrack(
@@ -89,4 +134,16 @@ class TrackSelector: TrackSelectorDelegate {
         }
     }
 
+    override fun hideOrShowQualityList() {
+        qualityRv?.isVisible = qualityRv?.isVisible != true
+    }
+
+    override fun nulifyProperties() {
+        qualityRv = null
+        qualityDialog = null
+        qualityDialogAdapter = null
+    }
+
 }
+
+typealias TrackSelectorData = Pair<List<QualityItem>, Tracks.Group?>

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.SystemClock
 import android.view.View
 import com.plutoisnotaplanet.exoplayerstreamingapp.domain.model.Coordinates
+import timber.log.Timber
 import kotlin.math.roundToInt
 
 fun Context.convertIntToDp(dp: Int): Int {
@@ -25,7 +26,11 @@ fun Context.calculateQualityDialogPosition(qualityListSize: Int): Coordinates {
 
 fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
     val safeClickListener = SafeClickListener {
-        onSafeClick(it)
+        try {
+            onSafeClick(it)
+        } catch (e: Exception) {
+            Timber.e("$e")
+        }
     }
     setOnClickListener(safeClickListener)
 }

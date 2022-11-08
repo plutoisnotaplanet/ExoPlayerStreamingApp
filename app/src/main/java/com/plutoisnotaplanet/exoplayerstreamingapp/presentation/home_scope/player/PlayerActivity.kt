@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -63,19 +64,19 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
 
     override fun onPause() {
         super.onPause()
-        destroyPlayer()
+        stopPlayer()
     }
 
     override fun onStop() {
         super.onStop()
-        destroyPlayer()
+        stopPlayer()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        nulifyProperties()
         binding = null
         imageLoader = null
-        qualityDialog = null
     }
 
     private fun prepareIntentForChannelId(intent: Intent?) {
@@ -107,7 +108,7 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
         }
     }
 
-    private fun destroyPlayer() {
+    private fun stopPlayer() {
         stopPlayer(player)
     }
 
@@ -116,7 +117,7 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
         startPlayer(this, player, data.url)
         binding?.videoView?.player = player
 
-        player!!.addListener(object : Player.Listener {
+        player.addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
                 super.onPlayerError(error)
                 showToast(error.message ?: "Error")
@@ -125,7 +126,7 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
         binding?.videoView?.setControllerVisibilityListener { visibility ->
             if (visibility != View.VISIBLE) {
                 hideSystemUi()
-                hideQualityDialog()
+                qualityRv?.isVisible = false
             }
         }
     }
@@ -141,11 +142,11 @@ class PlayerActivity : AppCompatActivity(), TrackSelectorDelegate by TrackSelect
             playerTtTv.text = playerViewState.title
             playerStTv.text = playerViewState.subTitle
             ivSettings.setSafeOnClickListener {
-                selectVideoTrack(
-                    fragmentManager = supportFragmentManager,
+                selectVideoTrackWithList(
+                    context = this@PlayerActivity,
                     player = player,
                     viewModel = viewModel,
-                    hideSystemUi = { hideSystemUi() }
+                    recyclerView = qualityRv
                 )
             }
             closeIv.setSafeOnClickListener { finish() }
